@@ -2,7 +2,8 @@
 
 * [CUDA for Java Developers](README.md)
 * [About](about.md)
-* [Porting Java code to CUDA](porting-java-code-to-cuda.md)
+* [Porting Java code to CUDA](porting-java-code-to-cuda/README.md)
+  * [Moving from Java to CUDA](porting-java-code-to-cuda/moving-from-java-to-cuda.md)
 * [Introduction](introduction.md)
 * [Technology](technology.md)
 * [Thinking in basics.](thinking-in-basics.md)
