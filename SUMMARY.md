@@ -6,6 +6,7 @@
   * [Moving from Java to CUDA](porting-java-code-to-cuda/moving-from-java-to-cuda.md)
   * [Porting](porting-java-code-to-cuda/porting.md)
   * [JNI - Interoperating with Java](porting-java-code-to-cuda/jni-interoperating-with-java.md)
+  * [JNI details](porting-java-code-to-cuda/jni-details.md)
 * [Introduction](introduction.md)
 * [Technology](technology.md)
 * [Thinking in basics.](thinking-in-basics.md)
