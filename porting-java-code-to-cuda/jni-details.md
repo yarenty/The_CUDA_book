@@ -10,21 +10,30 @@ Declaring a native method in Java
 * "Native": binary is platform dependent
 * Use **native** keyword in Java
 
-`native int simpleNativeMethod(int a, double b);`
+```cpp
+native int simpleNativeMethod(int a, double b);
+```
 
 #### Declaring a JNI header in C
 
 Methods to be declared in a header:
 
-`JNIEXPORT int JNICALL`
+```cpp
+JNIEXPORT int JNICALL
+Java_fully_qualified_name_of_Class_simpleMethodNativeMethod(JNIEnv *, jobject, jint, jdouble);
 
-`Java_fully_qualified_name_of_Class_simpleMethodNativeMethod(JNIEnv *, jobject, jint, jdouble);`
+
+```
 
 Must include "jni.h" to use JNI types and macros - this header can be found in $JAVA\_HOME/include
 
 Header can be machine-generated
 
-`$ javah -jni - classpath /path/to/bytecode -force -o generatedHeader.h fully.qualified.name.of.Class`
+
+
+```bash
+javah -jni - classpath /path/to/bytecode -force -o generatedHeader.h fully.qualified.name.of.Class
+```
 
 JavaH - Java Header Generator - binary can be founr iin $JDK\_HOME/bin
 

@@ -30,3 +30,9 @@ Show you wide range of possibilities that GPU programming could give us
 
 We are living in world of technology, where every year we are seeing enormous changes that ten years ago look like song of SF–I believe GPU programing could take big part in that revolution.
 
+
+
+
+
+
+
