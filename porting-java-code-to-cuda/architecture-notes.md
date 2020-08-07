@@ -31,9 +31,5 @@ Avoid the overhead introduced by JNI to the communication between the JVM and na
 
 
 
-
-
-
-
-
+![](../.gitbook/assets/jni_arch_d.png)
 
