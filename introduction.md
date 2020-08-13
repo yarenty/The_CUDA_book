@@ -1,8 +1,39 @@
 # Introduction
 
+## What is GPU / GPGPUs?
+
+General-Purpose computation on Graphics Processing Units.
+
+GPUs are high-performance many-core processors that can be used to accelerate a wide range of applications.
+
+Co-processor within the host computer
+
+Not seen as a graphics card but as a huge computational power in a device of a small size 
+
+#### A perfect storm of opportunities and technology
+
+Multi-threaded software is a must-have because manufacturers were forced to move to multi-core CPUs: the failure of Dennard's scaling laws meant processor manufacturers had to add cores to increase performance and entice customers. 
+
+Multi-core is disruptive to single-threaded legacy apps - businesses and research efforts will not benefit from new hardware unless they invest in multi-threaded software. Lack of investment risks stagnation and losing to the competition.
+
+Competition is fierce, the new technology is readily available and it is inexpensive!
+
+#### Why Massively Parallel Processing?
+
+* Silent revolution
+* Calculation: TFLOPS vs 100GFLOPS
+* Memory bandwidth: ~10x
+* a GPU in every PC
+* 
+
+
+
+
 ## What is CUDA?
 
 CUDA stands for Compute Unified Device Architecture, it is a parallel computing platform and programming model created by NVIDIA and implemented by the graphics processing units \(GPUs\) that they produce. CUDA gives developers direct access to the virtual instruction set and memory of the parallel computational elements in CUDA GPUs.
+
+First introduced in February 2007, CUDA is now taught at over 400 universities and academic institutions worldwide. NVIDIA estimates there is already an installed base of over 350 million CUDA-enabled GPGPUs
 
 ### What is difference between CPU and GPU?
 
@@ -33,4 +64,8 @@ Limitations
 * Exception handling is not supported in CUDA code due to performance overhead that would be incurred by across many thousands of parallel threads running.
 * CUDA \(with compute capability 2.x\) allows a subset of C++ class functionality, for example member functions may not be virtual \(this restriction will be removed in some future release\). \[See CUDA C Programming Guide 3.1–Appendix D.6\]
 * In single precision on first generation CUDA compute capability 1.x devices, denormal numbers are not supported and are instead flushed to zero, and the precisions of the division and square root operations are slightly lower than IEEE 754-compliant single precision math. Devices that support compute capability 2.0 and above support denormal numbers, and the division and square root operations are IEEE 754 compliant by default. However, users can obtain the previous faster gaming-grade math of compute capability 1.x devices if desired by setting compiler flags to disable accurate divisions, disable accurate square roots, and enable flushing denormal numbers to zero.
+
+
+
+_GPUs have evolved to the point where many real-world applications are easily implemented on them and run significantly faster than on multi-core systems. Future computing architectures will be hybrid systems with parallel-core GPUs working in tandem with multi-core CPUs._
 

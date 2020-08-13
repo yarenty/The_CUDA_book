@@ -30,6 +30,24 @@ Show you wide range of possibilities that GPU programming could give us
 
 We are living in world of technology, where every year we are seeing enormous changes that ten years ago look like song of SF–I believe GPU programing could take big part in that revolution.
 
+#### Goals
+
+To know about GPU computing and its usage
+
+To understand the CUDA language  and architecture
+
+To be able to use CUDA to parallelize applications
+
+To comprehend the CUDA memory model: specification, usage and constraints of each memory space
+
+To understand the underlying hardware
+
+To know some of the basic libraries and tools used for programming in CUDA
+
+To be able to read, write, compile and optimise software implementations in CUDA
+
+To be prepared to follow and easily master the next advances in the area
+
 
 
 
