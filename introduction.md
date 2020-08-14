@@ -24,7 +24,17 @@ Competition is fierce, the new technology is readily available and it is inexpen
 * Calculation: TFLOPS vs 100GFLOPS
 * Memory bandwidth: ~10x
 * a GPU in every PC
-* 
+
+![](.gitbook/assets/cpu_gpu.png)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -50,7 +60,9 @@ CUDA has several advantages over traditional general-purpose computation on GPUs
 * Faster downloads and readbacks to and from the GPU
 * Full support for integer and bitwise operations, including integer texture lookups
 
-Limitations
+![](.gitbook/assets/cpu_gpu_vector.png)
+
+#### Limitations
 
 * CUDA does not support the full C standard, as it runs host code through a C++ compiler, which makes some valid C \(but invalid C++\) code fail to compile.
 * Interoperability with rendering languages such as OpenGL is one-way, with access to OpenGL having access to registered CUDA memory but CUDA not having access to OpenGL memory.
@@ -68,4 +80,74 @@ Limitations
 
 
 _GPUs have evolved to the point where many real-world applications are easily implemented on them and run significantly faster than on multi-core systems. Future computing architectures will be hybrid systems with parallel-core GPUs working in tandem with multi-core CPUs._
+
+\_\_
+
+{% hint style="danger" %}
+_There was several projects in the past porting CUDA to different platforms._
+
+* SWAN - CUDA to OpenlCL translation
+* Ocelot - PTX to x86 emulation and translation
+
+They are no longer supported.
+{% endhint %}
+
+\_\_
+
+#### GPGPU -- historically
+
+General Purpose computation using GPU and graphics API in applications other than 3D graphics \( GPU accelerates critical path of application\)
+
+Data parallel algorithms leverage GPU attributes:
+
+* large date arrays, streaming throughput
+* fine-grain SIMD parallelism
+* low-latency floating point \(FP\)computation
+
+Applications:
+
+* game effects \(FX\) physics, image processing
+* physical modeling, computational engineering, matrix algebra, convolution, correlation, sorting 
+
+#### Why computing on GPUs?
+
+Incredibly powerful architecture \(peak performance over x TFlops\)
+
+Continuously improved \(price - commodity-driven market, density - power efficiency\)
+
+Transparent scalability \(natively massively parallel, multi-GPU easy\)
+
+Large eco-system: hardware, software, development tools\)
+
+
+
+
+
+#### Amdahl's law
+
+_The speed-up of a parallel program is limited by its sequential fraction._
+
+Strong scaling limited 
+
+
+
+#### Gustafson's law
+
+_The speed-up of a parallel program allows to tackle effectively larger problems in a given time frame._
+
+Weak s scaling opened
+
+
+
+#### Toollbox
+
+Lots of code is already ported - all fields of science covered, typical speed-ups from a few X to 100+X
+
+Accelerated libraries available: linear algebra, FFT, RNG, ..., template libraries
+
+Development tools - compiler, debugger, IDE from NVIDIA and 3rd party ISVs
+
+
+
+\_\_
 
