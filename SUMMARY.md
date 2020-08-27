@@ -2,7 +2,9 @@
 
 * [CUDA for Java Developers](README.md)
 * [About](about.md)
-* [Introduction](introduction.md)
+* [Introduction](introduction/README.md)
+  * [GPU](introduction/gpu.md)
+  * [CUDA](introduction/cuda.md)
 * [Porting Java code to CUDA](porting-java-code-to-cuda/README.md)
   * [Moving from Java to CUDA](porting-java-code-to-cuda/moving-from-java-to-cuda.md)
   * [Porting](porting-java-code-to-cuda/porting.md)
