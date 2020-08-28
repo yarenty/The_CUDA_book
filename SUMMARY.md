@@ -5,6 +5,7 @@
 * [Introduction](introduction/README.md)
   * [GPU](introduction/gpu.md)
   * [CUDA](introduction/cuda.md)
+  * [CUDA - typical program structure](introduction/cuda-typical-program-structure.md)
 * [Porting Java code to CUDA](porting-java-code-to-cuda/README.md)
   * [Moving from Java to CUDA](porting-java-code-to-cuda/moving-from-java-to-cuda.md)
   * [Porting](porting-java-code-to-cuda/porting.md)

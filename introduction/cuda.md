@@ -110,9 +110,21 @@ A CUDA kernel is executed ba an array of threads
 
 
 
+CUDA - memory model overview
 
+Global memory:
 
+* main means of communicating R/W data between host and device
+* contents visible to all threads
+* long latency access
 
+Constant memory
+
+* todo!!
+
+Texture memory
+
+* todo!!!
 
 
 
