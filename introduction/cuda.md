@@ -65,7 +65,7 @@ CUDA integrated CPU + GPU application C program:
 * serial C code executes on CPU
 * parallel kernel C code executes on GPU thread blocks
 
-\[pic!!!\]
+![Code execution flow](../.gitbook/assets/cuda_execution_flow.jpeg)
 
 
 
@@ -95,7 +95,7 @@ Each thread executes the same code
 
 threads are lightweight - very little overhead
 
-\[pic2 !!\]
+![](../.gitbook/assets/cuda_exec_2.jpeg)
 
 
 
@@ -106,7 +106,7 @@ A CUDA kernel is executed ba an array of threads
 * all threads run the same code \(SPMD\)
 * each thread has an ID that it uses to compute memory addresses and make control decisions
 
-\[pic 3\]
+![CUDA - threads processing array](../.gitbook/assets/cuda_array.jpeg)
 
 
 
