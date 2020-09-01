@@ -18,7 +18,7 @@
   * [Build](using-jni/build/README.md)
     * [Make](using-jni/build/make.md)
     * [JAR](using-jni/build/jar.md)
-* [Technology](technology.md)
+* [CUDA programming model](technology.md)
 * [Thinking in basics.](thinking-in-basics.md)
 * [CUDA capabilities](cuda-capabilities.md)
 * [Constant memory](constant-memory.md)
