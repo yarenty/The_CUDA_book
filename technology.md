@@ -116,9 +116,67 @@ int main(int argc, char *argv[]) {
 
 ### CUDA function declarations
 
+| Example | Executed on the: | Only callable from the |
+| :--- | :--- | :--- |
+| \_\_device\_\_ float DeviceFunc\(\) | device | device |
+| \_\_global\_\_ void KernelFunc\(\) | device | host |
+| \_\_host\_\_ float HostFunc\(\) | host | host |
 
 
 
+
+
+* \_\_host\_\_ is the default value and is overridden by other qualifiers
+* \_\_global\_\_ defines kernel function and MUST return void
+* \_\_device\_\_ and \_\_host\_\_ can be used together to define the same function to be called both host and device. The compiler generates two different versions for the same function
+
+```c
+__global__ void dist(double *x, double *y);
+__device__ double dist(double *x, double*y);
+__host__ double dist(double *x, double *y);
+__host__ __device__ double dist(double *x, double *y);
+```
+
+
+
+
+
+### Kernel execution
+
+
+
+Parallel code \(kernel\) is launched and executed on a device by many threads.
+
+Threads are grouped into thread blocks.
+
+Parallel code is written for a thread
+
+* each thread is free to execute a unique code path
+* built-in thread and block ID variables
+
+Threads launched for a parallel section are partitioned in thread blocks: grid = all blocks for a given kernel execution.
+
+Thread block is a group of threads that can:
+
+* synchronize their execution
+* communicate via shared memory
+
+
+
+```c
+myKernel<<< 3, 4 >>>(d_a);
+```
+
+![](.gitbook/assets/grid_block_thread.jpeg)
+
+
+
+Kernel launch is asynchronous: host doesn't wait for the kernel to finish - unless you tell it to do so
+
+```c
+cudaThreadDynchronise();
+/* wait until device has finished before allowing host execution to proceed */
+```
 
 
 
