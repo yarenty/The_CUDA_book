@@ -167,7 +167,7 @@ Thread block is a group of threads that can:
 myKernel<<< 3, 4 >>>(d_a);
 ```
 
-![](.gitbook/assets/grid_block_thread.jpeg)
+![](../.gitbook/assets/grid_block_thread.jpeg)
 
 
 
