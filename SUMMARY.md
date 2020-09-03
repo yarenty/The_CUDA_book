@@ -20,6 +20,8 @@
     * [JAR](using-jni/build/jar.md)
 * [CUDA programming model](programming_model/README.md)
   * [Examples](programming_model/examples.md)
+  * [Compilation - NVCC](programming_model/compilation-nvcc.md)
+  * [Error checking](programming_model/error-checking.md)
 * [Thinking in basics.](thinking-in-basics.md)
 * [CUDA capabilities](cuda-capabilities.md)
 * [Constant memory](constant-memory.md)
