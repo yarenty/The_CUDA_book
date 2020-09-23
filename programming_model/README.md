@@ -180,6 +180,11 @@ cudaThreadDynchronise();
 
 
 
+### Exercises
+
+1. Array copy: arraSrc\_h -\[copy\]-&gt; arraySrc\_d =\[copy\]=&gt; arrayDest\_d -\[copy\]-&gt; arrayDest\_h  ==&gt; compare
+2. Array reversal: host-&gt;device -\[xxxxx\(first with last\]-&gt;device-&gt; host-&gt; test \(multiblocks + error checking\)
+
 
 
 
