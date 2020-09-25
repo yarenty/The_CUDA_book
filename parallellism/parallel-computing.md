@@ -8,7 +8,7 @@ Calculations are performed in sequence: one task at a time.
 
 The workload is comprised of serial tasks, computed by a single processor.
 
-\[serial img\]
+![](../.gitbook/assets/parallel_sequential.jpeg)
 
 
 
@@ -20,7 +20,7 @@ But ultimately the time consumed for computing depends on the sum of all times c
 
 But take a closer look at the workload:
 
-\[seq tasks img\]
+
 
 
 
