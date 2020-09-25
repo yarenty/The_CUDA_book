@@ -60,7 +60,7 @@ The intermediate steps of an algorithm may be parallel , but its entry and exit 
 
 
 
-
+![](../.gitbook/assets/parallel_choose.png)
 
 
 
