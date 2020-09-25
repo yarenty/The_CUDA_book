@@ -143,7 +143,7 @@ Compiler identifies which instructions depend on each other so to schedule their
 
 Instruction pipelining: multiple instructions are partially overlapped
 
-\[instr img\]
+![](../.gitbook/assets/parallel_instruction.jpeg)
 
 
 
