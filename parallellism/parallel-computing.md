@@ -1,4 +1,4 @@
-# Parallel Computing
+# Parallel computing
 
 ### Classical computing paradigm: serial computing
 
@@ -163,7 +163,28 @@ Register naming:
 * some instructions may depend on one another due to same registers being used
 * in case the value stored is not used, the tasks can be made independent by renaming the registers
 
-Speculative execuion:
+Speculative execuion: if resources are idle, run instructions that may not be needed
+
+* prefetching in memory: load piece of data that is going to be used in a near future
+* branch prediction: try to guess which branch will be executed before knowing for sure
+* optimistic concurrency control: execute many instructions in parallel and only commit those which did not have its data modified by other instructions
+* eager execution: execute both sides sides of a coditional branch and only commit those results depending on how the condition is elavated
+
+
+
+### The taxonomy in software: data-level parallelism
+
+Divide the input into independent pieces that can be processed simultaneously, example: two gardeners, each weeding and watering 1/2 of the garden.
+
+
+
+### The taxonomy in software: task-level parallelism
+
+Divide tasks into independent sub-tasks that can be performed simultaneously, example: two gardeners, one weeding and one waterin all the garden
+
+
+
+
 
 
 
