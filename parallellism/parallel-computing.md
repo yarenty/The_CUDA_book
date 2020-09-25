@@ -20,7 +20,7 @@ But ultimately the time consumed for computing depends on the sum of all times c
 
 But take a closer look at the workload:
 
-
+![](../.gitbook/assets/parallel_dependencies.jpeg)
 
 
 
