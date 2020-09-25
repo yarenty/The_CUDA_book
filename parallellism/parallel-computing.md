@@ -60,7 +60,7 @@ Calculations are carried out simultaneously
 
 Large problems are divided into small pieces, each of which is solved concurrently
 
-\[parallel proc img\]
+![](../.gitbook/assets/parallel_3processors.jpeg)
 
 Universe in parallel not serial.
 
