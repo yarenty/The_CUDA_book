@@ -25,6 +25,7 @@
 * [Parallel Computing, Programming, Algorithms and Optimisation](parallellism/README.md)
   * [Parallel computing](parallellism/parallel-computing.md)
   * [Parallel programming](parallellism/parallel-programming.md)
+  * [Parallel algorithms](parallellism/parallel-algorithms.md)
 * [Thinking in basics.](thinking-in-basics.md)
 * [CUDA capabilities](cuda-capabilities.md)
 * [Constant memory](constant-memory.md)
