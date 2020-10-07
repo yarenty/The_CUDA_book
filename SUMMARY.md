@@ -27,6 +27,7 @@
   * [Parallel programming](parallellism/parallel-programming.md)
   * [Parallel algorithms](parallellism/parallel-algorithms.md)
   * [The challenges in parallel programming](parallellism/the-challenges-in-parallel-programming.md)
+  * [Parallelisation and laws](parallellism/parallelisation-and-laws.md)
 * [Thinking in basics.](thinking-in-basics.md)
 * [CUDA capabilities](cuda-capabilities.md)
 * [Constant memory](constant-memory.md)
