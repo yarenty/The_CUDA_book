@@ -1,4 +1,4 @@
-# Parallelisation and laws
+# Parallelisation and it's limits
 
 Exploiting parallelism comes at a cost - try to pay the lowes price
 
@@ -38,6 +38,58 @@ It may be solution in case of time or budget constrains!
 
 
 ### Parallel software optimisation
+
+An interative process
+
+Very time-consuming
+
+Levels to be tracked:
+
+* compiler issues
+* libraries, frameworks
+* code optimizaiton
+
+\[img workflow\]
+
+
+
+
+
+### Limits to scalability
+
+### Strong scaling - Amdahl's law:
+
+* fixed total problem size
+* time decreases when number of processors increases
+
+
+
+\[amhdals law img\]
+
+
+
+### Waek scaling: Gustafson's law:
+
+* fixed problem size per processor
+* time ideally remains constant despite the number of processors
+
+\[gustaf law img\]
+
+
+
+
+
+#### "If you build, they will come.."
+
+> And so we built them. Multiprocessor workstations, massively parallel supercomputers, a cluster in every department... and they haven't come.
+>
+> Programmers haven't come to program these wonderful machines.
+>
+> The computer industry is ready to flood the market with hardware that will only run at full speed with parallel programs. But who will write these programs?
+
+T. Mattson, B.Sanders, B. Massingill - "Patterns for parallel programming", 2005
+
+
 
 
 
