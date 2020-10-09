@@ -49,7 +49,7 @@ Levels to be tracked:
 * libraries, frameworks
 * code optimizaiton
 
-![](../.gitbook/assets/optimising_workflow.jpeg)
+![Optimising Workflow](../.gitbook/assets/optimising_workflow.jpeg)
 
 
 
@@ -62,7 +62,7 @@ Levels to be tracked:
 * fixed total problem size
 * time decreases when number of processors increases
 
-![](../.gitbook/assets/adahls_law.jpeg)
+![Amdahl&apos;s Law](../.gitbook/assets/adahls_law.jpeg)
 
 
 
@@ -73,7 +73,7 @@ Levels to be tracked:
 * fixed problem size per processor
 * time ideally remains constant despite the number of processors
 
-\[gustaf law img\]
+![Gustafson&apos;s Law](../.gitbook/assets/gustafsons_law.jpeg)
 
 
 
