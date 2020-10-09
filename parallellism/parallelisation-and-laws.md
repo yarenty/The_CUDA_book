@@ -49,7 +49,7 @@ Levels to be tracked:
 * libraries, frameworks
 * code optimizaiton
 
-\[img workflow\]
+![](../.gitbook/assets/optimising_workflow.jpeg)
 
 
 
@@ -62,9 +62,9 @@ Levels to be tracked:
 * fixed total problem size
 * time decreases when number of processors increases
 
+![](../.gitbook/assets/adahls_law.jpeg)
 
 
-\[amhdals law img\]
 
 
 
