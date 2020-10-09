@@ -16,7 +16,7 @@
 * [x] finish JNI
 * [x] change  intro 
 * [x] programming model
-* [ ] parallel computing
+* [x] parallel computing
 * [ ] cuda threads
 * [ ] hardware overview
 * [ ] code examples
