@@ -44,7 +44,7 @@ Blocks can have 1, 2, or 3 dimensions
 
 Each block dimension can have a maximum number of threads \(e.g. 512, 1024\)
 
-\[img 1d/2d block\]
+![Thread block organisation \(1D/2D\)](../.gitbook/assets/thread_block_organisation.jpeg)
 
 
 
@@ -52,13 +52,13 @@ Each block dimension can have a maximum number of threads \(e.g. 512, 1024\)
 
 Block shape doesn't matter, but may be usefull for mapping threads to data
 
-\[img array 1d/2d\]
+![Thread block vs array access](../.gitbook/assets/thread_block_array.jpeg)
 
 
 
 Or mapping nested loops in the original code: each 2D-organised thread taking care of an \(i,j\) pair:
 
-\[img code\]
+![Thread blocks - mapping loops](../.gitbook/assets/thread_block_loop.jpeg)
 
 
 
@@ -125,7 +125,21 @@ int idx = blockIdx.x * blockDim.x + threadIdx.x
 
 
 
+Thread cooperation
 
+
+
+Threads within a block can synchronise
+
+A thread cannot synchronise with threads in other blocks
+
+
+
+Thread synchronisation
+
+Within a block you can:
+
+* exchange data 
 
 
 
