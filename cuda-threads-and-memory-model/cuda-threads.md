@@ -70,7 +70,7 @@ Blocks are organised in a grid
 
 A grid can be 1D, 2D \(or 3D\)
 
-\[img grid\]
+![Grid vs blocks](../.gitbook/assets/block_organisation.jpeg)
 
 
 
@@ -99,11 +99,17 @@ dim3 threadIdx;
 
 Example: 1D blocks and grids
 
-\[img 5\]
+{% hint style="info" %}
+Simple Program Multiplt Data - concept!
+{% endhint %}
+
+![1D blocks and grid](../.gitbook/assets/block_1d.jpeg)
+
+
 
 Example: 2D blocks and grids
 
-\[img 6\]
+![2D blocks and grid](../.gitbook/assets/block_2d.jpeg)
 
 
 
@@ -111,7 +117,7 @@ Example: 2D blocks and grids
 
 Global thread ID can be used to decide what data thread will work on
 
-\[img 6 idx\]
+![Computing global thread ID](../.gitbook/assets/global_thread_id.jpeg)
 
 
 
@@ -119,15 +125,17 @@ Global thread ID can be used to decide what data thread will work on
 int idx = blockIdx.x * blockDim.x + threadIdx.x
 ```
 
+Global thread ID can be used to decida what data a thread will work on - reading memory array idx.
 
 
-\[img 6 array\]
 
 
 
-Thread cooperation
+#### Thread cooperation
 
-
+{% hint style="info" %}
+90% of bugs, are due to:
+{% endhint %}
 
 Threads within a block can synchronise
 
@@ -135,11 +143,12 @@ A thread cannot synchronise with threads in other blocks
 
 
 
-Thread synchronisation
+#### Thread synchronisation
 
 Within a block you can:
 
-* exchange data 
+* exchange data vie shared memory \(or other\)
+* synchronise threads: \_\_syncthreads\(\)
 
 
 
