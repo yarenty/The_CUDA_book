@@ -64,9 +64,9 @@ void MatrixMultHost(float* M, float* N, float* P, int WIDTH) {
 }
 ```
 
-\[img\]
+![matrix multiplication - host](../.gitbook/assets/matrix3.jpeg)
 
-Step 2: Input data transfer
+#### Step 2: Input data transfer
 
 ```c
 void MatrixMultDevice(float* M, float* N, float* P, int WIDTH) {
@@ -144,6 +144,10 @@ elementM, elementN  are local registers
 
 line 12 =&gt; Single Program Multiple Data
 {% endhint %}
+
+![matrix multiplication - device](../.gitbook/assets/matrix4.jpeg)
+
+
 
 
 
