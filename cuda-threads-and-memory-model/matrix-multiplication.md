@@ -26,7 +26,7 @@ A simple matrix multiplication example that illustrates the basic features of me
 
 
 
-\[img\[
+![](../.gitbook/assets/matrix1.jpeg)
 
 P = M \* N of size WIDTH \* WIDTH
 
@@ -39,7 +39,7 @@ Without tiling:
 
 #### Memory layout on matrix in C
 
-\[img\]
+![memory layout in C](../.gitbook/assets/matrix2.jpeg)
 
 
 
