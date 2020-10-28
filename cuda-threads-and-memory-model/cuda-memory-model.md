@@ -166,6 +166,101 @@ myKernel<<grid,block, ns>>>(...);
 
 
 
+### Textured memory
+
+
+
+Texture cache, one per multiprocessor - originally for storing images to give illusion of textured object.
+
+Whan item is read from global memory it is stored on the texture cache.
+
+Allows subsequent readts to utilise this element rather than calling globel memory or constant memory.
+
+Texture memory is NOT kept constant with global memory writes - a write to such address in the same kernel call will return undefined data when read again.
+
+Texture memory is :
+
+* an unusual combination of cache \(separate from registe, global, and shared memory\) and local processing capability - separate from the scalar processors.
+* data is stored .in the device global memory, but it is accessed through texture cache - useful for caching \(coalescing is a problem\)
+* support linear/bilinear and trilinear hardware interpolation \(graphics\)
+* bound to linear memory \(1D problems only\)
+* bound to CUDA arrays \(1D, 2D, 3D problems, hardware interpolation\)
+* read only, cannot detect dirty data - co cache consistency
+
+
+
+ 
+
+```c
+// declare texture reference
+texture<float,1,cudaReadMOdeElementType> texreference;
+//must be global on main program
+// type, dimension, 
+
+int main(int argc, char** argv) {
+    int size=3200;
+    float* harray;
+    float* diarray;
+    float* doarray;
+    
+    //allocate host and device memory
+    harray = (float*) malloc(sizeof(float)*size);
+    cudaMalloc((void**) &diarray, sizeof(float)*size);
+    cudaMalloc((void**) &doarray, sizeof(float)*size);
+    
+    //initialize host array before usage
+    for(int loop = 0; loop<size; loop++) 
+        harray[loop]=(float)rand()(RAND_MAX-1);
+    
+    //copy array from host to device memory:
+    cudaMemcpy(diarray,harray,sizeof(float)*size, cudaMemcpyHostToDevice);
+    
+    //bind texture reference with linear memory
+    cudaBindTexture(0,texreference,diarray, sizeof(float)*size);
+    
+    //execute kernel
+    kernel<<<(int)ceil((float)size/64),64>>>(doarray,size);
+    
+    //unbind texture reference to free resource
+    cudaUnbindTexture(texreference);
+    
+    //free host and device memory
+    free(harray);
+    cudaFree(diarray);
+    cudaFree(doarray);
+    
+    return 0;
+    
+}
+```
+
+
+
+```c
+__global__ void kernel(float* doarray,int size){
+    //calculate each thread global index
+    int index = blockIdx.x*blockDim.x+threadIdx.x;
+    
+    //fetch global memory through texture reference
+    doarray[index] = tex1Dfetch(texreference, index);
+
+}
+
+
+__global__ void offsetCopy(float* idata, float* odata, int offset){
+    //compute each thread global index
+    int index = blockIdx.x*blockDim.x+threadIdx.x;
+    
+    //copy data from global memory: non-textured
+    odata[index]= idata[index+offset];
+    
+    //copy data from global memory: textured
+    odata[index] = tex1Dfetch(texreference,index+offset);
+}
+```
+
+
+
 
 
 
