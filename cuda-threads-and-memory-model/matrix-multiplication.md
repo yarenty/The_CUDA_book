@@ -173,20 +173,22 @@ line 3 - number of threads in block equals our outpput matrix
 
 What is going on?
 
-One bloc of threads to compute matrix Pd - each thread computes one element of Pd.
+
+
+![matrix multiplication - one block of threads ](../.gitbook/assets/matrix5.jpeg)
+
+One block of threads to compute matrix Pd = each thread computes one element of Pd.
 
 Each thread:
 
-* loads row of matrix Md
-* loads column of matrix Md
+* loads a row of matrix Md
+* loads a column of matrix Md
 * perform one multiply and addition for each pair Md and Nd elements
 * compute to off-chip memory access ration close to 1:1 \(not very high\)
 
 Size of matrix limited by the number of threads allowed in a thread block.
 
  
-
-\[img\]
 
 
 
