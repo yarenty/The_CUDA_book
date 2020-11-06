@@ -328,6 +328,27 @@ atomicAdd\(\) also available for float starting with compute capability 2.0
 
 #### Typical structure of CUDA program
 
+1. Global variables declaration
+   * `__host__`
+   * `__device__, __global__, __constant__, texture`
+2. Function prototypes
+   * `__global__ void kernelOne(...)`
+   * `float helperFunction(...)`
+3. Main \(\)
+   * allocate memory space on the device - `cudaMalloc(&d_GlobalVariablePtr, bytes)`
+   * transfer data from host to device - `cudaMemCpy(d_GlobalVariablePtr, h_GlobalVariablePointer,..)`
+   * execution configuration setup
+   * kernell call - `kernelOne<<<execution configuration>>>(args...)`
+   * transfer results from device to host - `CudaMemCpy(h_GlobalVariablePtr, d_...)`
+   * optional \(in test mode\): compare against golden \(host computed\) solution
+4. Kernel - void kernelOne\(type args...\)
+   * variables declaration - `__shared__`
+   * automatic variables transparently assigned to register or local memory
+   * `__syncthreads()...`
+5. Other functions
+
+   * `float helperFunction(int intVar...);`
+
 
 
 
