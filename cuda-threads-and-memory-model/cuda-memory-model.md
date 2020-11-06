@@ -261,6 +261,12 @@ __global__ void offsetCopy(float* idata, float* odata, int offset){
 
 
 
+### Tips & tricks
+
+#### Where to declare variables?
+
+![](../.gitbook/assets/tips_variables.png)
+
 
 
 
