@@ -133,6 +133,8 @@ Size per SM:
 * compute capability 1.3: 16K
 * compute capability 2.x: 16 or 48K
 
+![Shared memory](../.gitbook/assets/mem_shared.jpeg)
+
 Possible uses:
 
 * storing intermediate values \(ie: accumulators\) before writing to global memory
