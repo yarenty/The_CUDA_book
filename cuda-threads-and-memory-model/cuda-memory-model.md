@@ -21,6 +21,10 @@ CUDA memory spaces & scopes
 * constant
 * registers
 
+![CUDA memory spaces](../.gitbook/assets/mem_spaces.jpeg)
+
+
+
 
 
 ### Global memory
