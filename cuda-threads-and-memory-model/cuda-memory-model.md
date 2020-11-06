@@ -349,6 +349,27 @@ atomicAdd\(\) also available for float starting with compute capability 2.0
 
    * `float helperFunction(int intVar...);`
 
+#### CUDA device memory space
+
+Each thread can:
+
+* R/W per thread registers
+* R/W per-thread local memory \(avoid\)
+* R/W per-block shared memory
+* R/W per-grid global memory
+* Read only per-grid constantmemory
+* Read only per-grid texture memory
+
+The host can:
+
+* R/W global constant and texture memory
+
+
+
+
+
+![CUDA device memory space](../.gitbook/assets/device_memory.jpeg)
+
 
 
 
