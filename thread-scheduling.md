@@ -14,7 +14,7 @@ Until they are processed
 
 Each block is partitioned into 32-thread batches called warps \(warp definition not part of CUDAA\).
 
-Only .one warp is executed on an SM at a time
+Only one warp is executed on an SM at a time
 
 Threadss within a warp run instruction in lock-steps
 
