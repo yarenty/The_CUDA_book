@@ -40,4 +40,5 @@
 * [Global memory - pinned/unpinned](global-memory-pinnedunpinned.md)
 * [Streams](streams.md)
 * [APPENDIX: Libraries](appendix-libraries.md)
+* [GPGPU hardware](gpgpu-hardware.md)
 
