@@ -32,6 +32,7 @@
   * [CUDA Threads](cuda-threads-and-memory-model/cuda-threads.md)
   * [Matrix multiplication](cuda-threads-and-memory-model/matrix-multiplication.md)
   * [CUDA Memory Model](cuda-threads-and-memory-model/cuda-memory-model.md)
+* [Thread scheduling](thread-scheduling.md)
 * [Thinking in basics.](thinking-in-basics.md)
 * [CUDA capabilities](cuda-capabilities.md)
 * [Constant memory](constant-memory.md)
