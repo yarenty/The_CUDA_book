@@ -131,7 +131,16 @@ Memory access conflicts do occur if multiple threads \(but not all\) in the same
 
 
 
+### Memory alignment 
 
+From programmers guide:
+
+> Any access to a variable in global memory compiles to a single instruction if and only if:
+>
+> 1. The size of the data type is 1,2,4,8, or 16 bytes
+> 2. The data is naturally aligned \(its adress is a multiple of its size\)
+
+\[img memory alignmet example\]
 
 
 
