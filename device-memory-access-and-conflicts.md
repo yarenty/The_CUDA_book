@@ -144,6 +144,63 @@ From programmers guide:
 
 
 
+?? Matrix transpose
+
+
+
+#### Short vector types
+
+Array of multi-element data structures?
+
+* sequential access pattern uses multiple times the necessary bandwidth
+* short vector types don't waste bandwidth, and use one instruction to load multiple elements: int2, char4, etc
+* it is possible to create your own short-vector types
+
+
+
+#### Memory dangers
+
+* Need to maintain alignment when reading, non-naturally aligned 8-byte or 16-byte words
+* 2D Array: BaseAddress + width \* ty + tx
+* WIdth of thread block & width of array - multiple of the warp size \(1/2 warrp is 1.x compute\)
+* cudaMallocPitch\(\) adds the correct padding to improve access efficiency
+
+#### Dealing with memory in CUDA
+
+Minimize memory transfers - even if it includes doing inefficient calculations od the device
+
+Coalesce all memory access
+
+Favour shared memory access to global memory access
+
+Avoid code execution branching within a single warp as this serializes the threads
+
+
+
+#### Optimising memory throughput
+
+Minimise data transfers between the host and the device
+
+Minimise data transfers between global memory and the device by maximising use of on-chip memory \(shared memory & caches\)
+
+Maximise optimal memory access patterns
+
+\[img\]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
