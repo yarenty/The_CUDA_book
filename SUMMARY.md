@@ -34,6 +34,7 @@
   * [CUDA Memory Model](cuda-threads-and-memory-model/cuda-memory-model.md)
 * [Thread scheduling](thread-scheduling.md)
 * [Device memory access & conflicts](device-memory-access-and-conflicts.md)
+* [Device occupancy](device-occupancy.md)
 * [Thinking in basics.](thinking-in-basics.md)
 * [CUDA capabilities](cuda-capabilities.md)
 * [Constant memory](constant-memory.md)
