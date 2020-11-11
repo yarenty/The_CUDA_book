@@ -19,7 +19,7 @@ Greater occupancy is desirable because it helps to hide latency
 
 
 
-Programmer view of register file
+### Programmer view of register file
 
 There are 32768 registers in each SM in Fermi
 
@@ -32,7 +32,7 @@ There are 32768 registers in each SM in Fermi
 
 
 
-Matrix Multiplication example
+### Matrix Multiplication example
 
 If each block has 512 threads and each thread uses 16 registers, how many thread can run on each SM?
 
@@ -48,6 +48,8 @@ How about if each thread increases the use of registers by 1?
 
 
 
+### Dynamic partitioning
+
 Dynamic partitioning gives more flexibility to compilers/programmers:
 
 * one can run a smaller number of threads that require many registers each or a large number of threads that require few registers each - this allows for finer grain threading than traditional CPU threading models
@@ -55,7 +57,7 @@ Dynamic partitioning gives more flexibility to compilers/programmers:
 
 
 
-NVCC - usefull flag
+### NVCC - usefull flag
 
 --ptxas-options=v
 
@@ -64,6 +66,20 @@ This gives information about used registers, shared memory per block \(user and 
 \[add output of code example!!\]
 
  
+
+### CUDA occupancy calculator
+
+Can help find the sweet spot for the block size
+
+Can highlight what are the limiting factors for occupancy..:
+
+* register usage
+* shared memory
+* block size
+
+May have to experiment with block size to see what works best
+
+Occupancy isn't the most important thing
 
 
 
