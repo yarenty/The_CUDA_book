@@ -10,23 +10,26 @@ All device operations \(kernels and data transfers\) in CUDA run in a stream. Wh
 
 Let’s look at some simple code examples that use the default stream, and discuss how operations progress from the perspective of the host as well as the device.
 
-cudaMemcpy\(d\_a,a,numBytes,cudaMemcpyHostToDevice\);
+```c
+cudaMemcpy(d_a,a,numBytes,cudaMemcpyHostToDevice);
+increment<<<1,N>>>(d_a)
+cudaMemcpy(a,d_a,numBytes,cudaMemcpyDeviceToHost);
+```
 
-increment&lt;&lt;&lt;1,N&gt;&gt;&gt;\(d\_a\)
 
-cudaMemcpy\(a,d\_a,numBytes,cudaMemcpyDeviceToHost\);
 
 In the code above, from the perspective of the device, all three operations are issued to the same \(default\) stream and will execute in the order that they were issued. From the perspective of the host, the implicit data transfers are blocking or synchronous transfers, while the kernel launch is asynchronous. Since the host-to-device data transfer on the first line is synchronous, the CPU thread will not reach the kernel call on the second line until the host-to-device transfer is complete. Once the kernel is issued, the CPU thread moves to the third line, but the transfer on that line cannot begin due to the device-side order of execution.
 
 The asynchronous behavior of kernel launches from the host’s perspective makes overlapping device and host computation very simple. We can modify the code to add some independent CPU computation as follows.
 
-cudaMemcpy\(d\_a,a,numBytes,cudaMemcpyHostToDevice\);
+```c
+cudaMemcpy(d_a,a,numBytes,cudaMemcpyHostToDevice);
+increment<<<1,N>>>(d_a)
+myCpuFunction(b)
+cudaMemcpy(a,d_a,numBytes,cudaMemcpyDeviceToHost);
+```
 
-increment&lt;&lt;&lt;1,N&gt;&gt;&gt;\(d\_a\)
 
-myCpuFunction\(b\)
-
-cudaMemcpy\(a,d\_a,numBytes,cudaMemcpyDeviceToHost\);
 
 In the above code, as soon as theincrement\(\)kernel is launched on the device the CPU thread executesmyCpuFunction\(\), overlapping its execution on the CPU with the kernel execution on the GPU. Whether the host function or device kernel completes first doesn’t affect the subsequent device-to-host transfer, which will begin only after the kernel completes.From the perspective of the device, nothing has changed from the previous example; the device is completely unaware ofmyCpuFunction\(\).
 
@@ -34,13 +37,14 @@ In the above code, as soon as theincrement\(\)kernel is launched on the device t
 
 Non-default streams in CUDA C/C++ are declared, created, and destroyed in host code as follows.
 
-cudaStream\_tstream1;
+```c
+cudaStream_tstream1;
+cudaError_tresult;
+result=cudaStreamCreate(&stream1)
+result=cudaStreamDestroy(stream1)
+```
 
-cudaError\_tresult;
 
-result=cudaStreamCreate\(&stream1\)
-
-result=cudaStreamDestroy\(stream1\)
 
 To issue a data transfer to a non-default stream we use the[cudaMemcpyAsync](http://docs.nvidia.com/cuda/cuda-runtime-api/index.html#group__CUDART__MEMORY_1gf2810a94ec08fe3c7ff9d93a33af7255)\(\)function, which is similar to thecudaMemcpy\(\)function discussed in the previous post, but takes a stream identifier as a fifth argument.
 
@@ -70,47 +74,39 @@ Earlier we demonstrated how to overlap kernel execution in the default stream wi
 
 So let’s modify our simple host code from above to use multiple streams and see if we can achieve any overlap. The full code for this example is[available on Github](https://github.com/parallel-forall/code-samples/blob/master/series/cuda-cpp/overlap-data-transfers/async.cu). In the modified code, we break up the array of sizeNinto chunks ofstreamSizeelements. Since the kernel operates independently on all elements, each of the chunks can be processed independently. The number of \(non-default\) streams used isnStreams=N/streamSize. There are multiple ways to implement the domain decomposition of the data and processing; one is to loop over all the operations for each chunk of the array as in this example code.
 
-for\(inti=0;i&lt;nStreams;++i\){
-
-intoffset=i\*streamSize;
-
-cudaMemcpyAsync\(&d\_a\[offset\],&a\[offset\],streamBytes,stream\[i\]\);
-
-kernel&lt;&lt;&gt;&gt;\(d\_a,offset\);
-
-cudaMemcpyAsync\(&a\[offset\],&d\_a\[offset\],streamBytes,stream\[i\]\);
-
+```c
+for(int i=0;i<nStreams;++i){
+    int offset=i*streamSize;
+    cudaMemcpyAsync(&d_a[offset],&a[offset],streamBytes,stream[i]);
+    kernel<<>>(d_a,offset);
+    cudaMemcpyAsync(&a[offset],&d_a[offset],streamBytes,stream[i]);
 }
+```
+
+
 
 Another approach is to batch similar operations together, issuing all the host-to-device transfers first, followed by all kernel launches, and then all device-to-host transfers, as in the following code.
 
-for\(inti=0;i&lt;nStreams;++i\){
-
-intoffset=i\*streamSize;
-
-cudaMemcpyAsync\(&d\_a\[offset\],&a\[offset\],
-
-streamBytes,cudaMemcpyHostToDevice,stream\[i\]\);
-
+```c
+for(int i=0;i<nStreams;++i){
+    int offset=i*streamSize;
+    cudaMemcpyAsync(&d_a[offset],&a[offset],
+    streamBytes,cudaMemcpyHostToDevice,stream[i]);
 }
 
-for\(inti=0;i&lt;nStreams;++i\){
-
-intoffset=i\*streamSize;
-
-kernel&lt;&lt;&gt;&gt;\(d\_a,offset\);
-
+for(int i=0;i<nStreams;++i){
+    int offset=i*streamSize;
+    kernel<<>>(d_a,offset);
 }
 
-for\(inti=0;i&lt;nStreams;++i\){
-
-intoffset=i\*streamSize;
-
-cudaMemcpyAsync\(&a\[offset\],&d\_a\[offset\],
-
-streamBytes,cudaMemcpyDeviceToHost,stream\[i\]\);
-
+for(int i=0;i<nStreams;++i){
+    int offset=i*streamSize;
+    cudaMemcpyAsync(&a[offset],&d_a[offset],
+    streamBytes,cudaMemcpyDeviceToHost,stream[i]);
 }
+```
+
+
 
 Both asynchronous methods shown above yield correct results, and in both cases dependent operations are issued to the same stream in the order in which they need to be executed. But the two approaches perform very differently depending on the specific generation of GPU used.
 

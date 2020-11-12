@@ -16,187 +16,113 @@ Host \(CPU\) data allocations are pageable by default. The GPU cannot access dat
 
 As you can see in the figure, pinned memory is used as a staging area for transfers from the device to the host. We can avoid the cost of the transfer between pageable and pinned host arrays by directly allocating our host arrays in pinned memory. Allocate pinned host memory in CUDA C/C++ using[cudaMallocHost\(\)](http://docs.nvidia.com/cuda/cuda-runtime-api/index.html#group__CUDART__MEMORY_1g9f93d9600f4504e0d637ceb43c91ebad)or[cudaHostAlloc\(\)](http://docs.nvidia.com/cuda/cuda-runtime-api/index.html#group__CUDART__MEMORY_1g15a3871f15f8c38f5b7190946845758c), and deallocate it with[cudaFreeHost\(\)](http://docs.nvidia.com/cuda/cuda-runtime-api/index.html#group__CUDART__MEMORY_1gedaeb2708ad3f74d5b417ee1874ec84a). It is possible for pinned memory allocation to fail, so you should always check for errors. The following code excerpt demonstrates allocation of pinned memory with error checking.
 
-cudaError\_tstatus=cudaMallocHost\(\(void\*\*\)&h\_aPinned,bytes\);
+```c
+cudaError_t status=cudaMallocHost((void**)&h_aPinned,bytes);
+if(status!=cudaSuccess)
+    printf("Error allocating pinned host memory");
+```
 
-if\(status!=cudaSuccess\)
 
-printf\("Error allocating pinned host memoryn"\);
 
 Data transfers using host pinned memory use the same[cudaMemcpy\(\)](http://docs.nvidia.com/cuda/cuda-runtime-api/index.html#group__CUDART__MEMORY_1g48efa06b81cc031b2aa6fdc2e9930741)syntax as transfers with pageable memory. We can use the following“bandwidthtest”program \([also available on Github](https://github.com/parallel-forall/code-samples/blob/master/series/cuda-cpp/optimize-data-transfers/bandwidthtest.cu)\) to compare pageable and pinned transfer rates.
 
-\#include&lt;stdio.h&gt;
-
-\#include&lt;assert.h&gt;
+```c
+#include<stdio.h>
+#include<assert.h>
 
 // Convenience function for checking CUDA runtime API results
-
 // can be wrapped around any runtime API call. No-op in release builds.
-
 inline
-
-cudaError\_tcheckCuda\(cudaError\_tresult\)
-
-{
-
-\#if defined\(DEBUG\) \|\| defined\(\_DEBUG\)
-
-if\(result!=cudaSuccess\){
-
-fprintf\(stderr,"CUDA Runtime Error: %sn",
-
-cudaGetErrorString\(result\)\);
-
-assert\(result==cudaSuccess\);
-
+cudaError_t checkCuda(cudaError_tresult) {
+    #if defined(DEBUG) || defined(_DEBUG)
+    if(result!=cudaSuccess){
+        fprintf(stderr,"CUDA Runtime Error: %sn",
+        cudaGetErrorString(result));
+        assert(result==cudaSuccess);
+    }
+    #endif
+    return result;
 }
 
-\#endif
 
-returnresult;
-
+void profileCopies(float *h_a, float *h_b,float *d, unsigned int n, char *desc) {
+    printf("n%s transfersn",desc);
+    unsigned int bytes=n*sizeof(float);
+    // events for timing
+    cudaEvent_t startEvent,stopEvent;
+    checkCuda(cudaEventCreate(&startEvent));
+    checkCuda(cudaEventCreate(&stopEvent));
+    checkCuda(cudaEventRecord(startEvent,0));
+    checkCuda(cudaMemcpy(d,h_a,bytes,cudaMemcpyHostToDevice));
+    checkCuda(cudaEventRecord(stopEvent,0));
+    checkCuda(cudaEventSynchronize(stopEvent));
+    float time;
+    checkCuda(cudaEventElapsedTime(&time,startEvent,stopEvent));
+    printf(" Host to Device bandwidth (GB/s): %fn",bytes*1e-6/time);
+    checkCuda(cudaEventRecord(startEvent,0));
+    checkCuda(cudaMemcpy(h_b,d,bytes,cudaMemcpyDeviceToHost));
+    checkCuda(cudaEventRecord(stopEvent,0));
+    checkCuda(cudaEventSynchronize(stopEvent));
+    checkCuda(cudaEventElapsedTime(&time,startEvent,stopEvent));
+    printf(" Device to Host bandwidth (GB/s): %fn",bytes*1e-6/time);
+    for(inti=0;i<n;++i){
+        if(h_a[i]!=h_b[i]){
+            printf("*** %s transfers failed ***",desc);
+            break;
+        }
+    }
+    // clean up events
+    checkCuda(cudaEventDestroy(startEvent));
+    checkCuda(cudaEventDestroy(stopEvent));
 }
 
-voidprofileCopies\(float\*h\_a,
 
-float\*h\_b,
+int main() {
+    unsigned int nElements=4*1024*1024;    
+    const unsigned int bytes=nElements*sizeof(float);
+    // host arrays
+    float *h_aPageable,*h_bPageable;
+    float *h_aPinned,*h_bPinned;
+    // device array
+    float *d_a;
+    
+    // allocate and initialize
+    h_aPageable=(float*)malloc(bytes);// host pageable
+    h_bPageable=(float*)malloc(bytes);// host pageable
+    checkCuda(cudaMallocHost((void**)&h_aPinned,bytes));// host pinned
+    checkCuda(cudaMallocHost((void**)&h_bPinned,bytes));// host pinned
+    checkCuda(cudaMalloc((void**)&d_a,bytes));// device
+    for(inti=0;i<nElements;++i) h_aPageable[i]=i;
+    
+    memcpy(h_aPinned,h_aPageable,bytes);
+    memset(h_bPageable,0,bytes);
+    memset(h_bPinned,0,bytes);
 
-float\*d,
+    // output device info and transfer size
+    cudaDeviceProp prop;
+    checkCuda(cudaGetDeviceProperties(&prop,0));
+    printf("nDevice: %sn",prop.name);
+    printf("Transfer size (MB): %dn",bytes/(1024*1024));
 
-unsignedint n,
+    // perform copies and report bandwidth
+    profileCopies(h_aPageable,h_bPageable,d_a,nElements,"Pageable");
+    profileCopies(h_aPinned,h_bPinned,d_a,nElements,"Pinned");
+    printf("\n");
 
-char\*desc\)
+    // cleanup
+    cudaFree(d_a);
+    cudaFreeHost(h_aPinned);
+    cudaFreeHost(h_bPinned);
+    free(h_aPageable);
+    free(h_bPageable);
 
-{
-
-printf\("n%s transfersn",desc\);
-
-unsignedintbytes=n\*sizeof\(float\);
-
-// events for timing
-
-cudaEvent\_tstartEvent,stopEvent;
-
-checkCuda\(cudaEventCreate\(&startEvent\)\);
-
-checkCuda\(cudaEventCreate\(&stopEvent\)\);
-
-checkCuda\(cudaEventRecord\(startEvent,0\)\);
-
-checkCuda\(cudaMemcpy\(d,h\_a,bytes,cudaMemcpyHostToDevice\)\);
-
-checkCuda\(cudaEventRecord\(stopEvent,0\)\);
-
-checkCuda\(cudaEventSynchronize\(stopEvent\)\);
-
-floattime;
-
-checkCuda\(cudaEventElapsedTime\(&time,startEvent,stopEvent\)\);
-
-printf\(" Host to Device bandwidth \(GB/s\): %fn",bytes\*1e-6/time\);
-
-checkCuda\(cudaEventRecord\(startEvent,0\)\);
-
-checkCuda\(cudaMemcpy\(h\_b,d,bytes,cudaMemcpyDeviceToHost\)\);
-
-checkCuda\(cudaEventRecord\(stopEvent,0\)\);
-
-checkCuda\(cudaEventSynchronize\(stopEvent\)\);
-
-checkCuda\(cudaEventElapsedTime\(&time,startEvent,stopEvent\)\);
-
-printf\(" Device to Host bandwidth \(GB/s\): %fn",bytes\*1e-6/time\);
-
-for\(inti=0;i&lt;n;++i\){
-
-if\(h\_a\[i\]!=h\_b\[i\]\){
-
-printf\("\*\*\* %s transfers failed \*\*\*",desc\);
-
-break;
-
+    return 0;
 }
+```
 
-}
 
-// clean up events
 
-checkCuda\(cudaEventDestroy\(startEvent\)\);
 
-checkCuda\(cudaEventDestroy\(stopEvent\)\);
-
-}
-
-intmain\(\)
-
-{
-
-unsignedintnElements=4\*1024\*1024;
-
-constunsignedintbytes=nElements\*sizeof\(float\);
-
-// host arrays
-
-float\*h\_aPageable,\*h\_bPageable;
-
-float\*h\_aPinned,\*h\_bPinned;
-
-// device array
-
-float\*d\_a;
-
-// allocate and initialize
-
-h\_aPageable=\(float\*\)malloc\(bytes\);// host pageable
-
-h\_bPageable=\(float\*\)malloc\(bytes\);// host pageable
-
-checkCuda\(cudaMallocHost\(\(void\*\*\)&h\_aPinned,bytes\)\);// host pinned
-
-checkCuda\(cudaMallocHost\(\(void\*\*\)&h\_bPinned,bytes\)\);// host pinned
-
-checkCuda\(cudaMalloc\(\(void\*\*\)&d\_a,bytes\)\);// device
-
-for\(inti=0;i&lt;nElements;++i\)h\_aPageable\[i\]=i;
-
-memcpy\(h\_aPinned,h\_aPageable,bytes\);
-
-memset\(h\_bPageable,0,bytes\);
-
-memset\(h\_bPinned,0,bytes\);
-
-// output device info and transfer size
-
-cudaDeviceProp prop;
-
-checkCuda\(cudaGetDeviceProperties\(&prop,0\)\);
-
-printf\("nDevice: %sn",prop.name\);
-
-printf\("Transfer size \(MB\): %dn",bytes/\(1024\*1024\)\);
-
-// perform copies and report bandwidth
-
-profileCopies\(h\_aPageable,h\_bPageable,d\_a,nElements,"Pageable"\);
-
-profileCopies\(h\_aPinned,h\_bPinned,d\_a,nElements,"Pinned"\);
-
-printf\("n"\);
-
-// cleanup
-
-cudaFree\(d\_a\);
-
-cudaFreeHost\(h\_aPinned\);
-
-cudaFreeHost\(h\_bPinned\);
-
-free\(h\_aPageable\);
-
-free\(h\_bPageable\);
-
-return0;
-
-}
 
 The data transfer rate can depend on the type of host system \(motherboard, CPU, and chipset\) as well as the GPU. On my laptop which has an Intel Core i7-2620M CPU \(2.7GHz, 2 Sandy Bridge cores, 4MB L3 Cache\) and an NVIDIA NVS 4200M GPU \(1 Fermi SM, Compute Capability 2.1, PCI-e Gen2 x16\), runningBandwidthTestproduces the following results. As you can see, pinned transfers are more than twice as fast as pageable transfers.
 
@@ -234,7 +160,7 @@ Host to Device bandwidth \(GB/s\): 6.186581
 
 Device to Host bandwidth \(GB/s\): 6.670246
 
-You should not over-allocate pinned memory. Doing socan reduce overall system performance because it reduces the amount of physical memory available to the operating system and other programs. How much is too much is difficult to tell in advance, so as with all optimizations, test your applications and the systems they run on for optimal performance parameters.
+You should not over-allocate pinned memory. Doing so can reduce overall system performance because it reduces the amount of physical memory available to the operating system and other programs. How much is too much is difficult to tell in advance, so as with all optimizations, test your applications and the systems they run on for optimal performance parameters.
 
 **Batching Small Transfers**
 
