@@ -12,91 +12,59 @@ To ensure correct results when parallel threads cooperate, we must synchronize t
 
 Declare shared memory in CUDA C/C++ device code using the\_\_shared\_\_variable declaration specifier. There are multiple ways to declare shared memory inside a kernel, depending on whether the amount of memory is known at compile time or at run time. The following complete code \([available on GitHub](https://github.com/parallel-forall/code-samples/blob/master/series/cuda-cpp/shared-memory/shared-memory.cu)\) illustrates various methods of using shared memory.
 
-\#include
-
-\_\_global\_\_voidstaticReverse\(int\*d,intn\)
-
-{
-
-\_\_shared\_\_ints\[64\];
-
-intt=threadIdx.x;
-
-inttr=n-t-1;
-
-s\[t\]=d\[t\];
-
-\_\_syncthreads\(\);
-
-d\[t\]=s\[tr\];
-
+```c
+#include
+__global__ void staticReverse(int*d,intn) {
+    __shared__ int s[64];
+    int t = threadIdx.x;
+    int tr = n-t-1;
+    s[t]=d[t];
+    __syncthreads();
+    d[t]=s[tr];
 }
 
-\_\_global\_\_voiddynamicReverse\(int\*d,intn\)
-
-{
-
-extern\_\_shared\_\_ints\[\];
-
-intt=threadIdx.x;
-
-inttr=n-t-1;
-
-s\[t\]=d\[t\];
-
-\_\_syncthreads\(\);
-
-d\[t\]=s\[tr\];
-
+__global__ void dynamicReverse( int *d,int n) {
+    extern __shared__ int s[];
+    int t=threadIdx.x;
+    int tr =n-t-1;
+    s[t] = d[t];
+    __syncthreads();
+    d[t]=s[tr];
 }
 
-intmain\(void\)
 
-{
+int main(void) {
+    const int n=64;
+    int a[n],r[n],d[n];
+    for(inti=0;i<n;i++) {
+        a[i]=i;
+        r[i]=n-i-1;
+        d[i]=0;
+    }
+    
+    int *d_d;
+    cudaMalloc(&d_d,n*sizeof(int));
 
-constintn=64;
+    // run version with static shared memory
+    cudaMemcpy(d_d,a,n*sizeof(int),cudaMemcpyHostToDevice);
+    staticReverse<<<1,n>>>(d_d,n);
+    cudaMemcpy(d,d_d,n*sizeof(int),cudaMemcpyDeviceToHost);
 
-inta\[n\],r\[n\],d\[n\];
+    for(inti=0;i<n;i++)
+        if(d[i]!=r[i]) printf("Error: d[%d]!=r[%d] (%d, %d)n",i,i,d[i],r[i]);
 
-for\(inti=0;i&lt;n;i++\){
-
-a\[i\]=i;
-
-r\[i\]=n-i-1;
-
-d\[i\]=0;
-
+    // run dynamic shared memory version
+    cudaMemcpy(d_d,a,n*sizeof(int),cudaMemcpyHostToDevice);
+    dynamicReverse<<<1,n,n*sizeof(int)>>>(d_d,n);
+    cudaMemcpy(d,d_d,n*sizeof(int),cudaMemcpyDeviceToHost);
+    
+    for(inti=0;i<n;i++)
+        if(d[i]!=r[i]) printf("Error: d[%d]!=r[%d] (%d, %d)n",i,i,d[i],r[i]);
 }
 
-int\*d\_d;
+```
 
-cudaMalloc\(&d\_d,n\*sizeof\(int\)\);
 
-// run version with static shared memory
-
-cudaMemcpy\(d\_d,a,n\*sizeof\(int\),cudaMemcpyHostToDevice\);
-
-staticReverse&lt;&lt;&lt;1,n&gt;&gt;&gt;\(d\_d,n\);
-
-cudaMemcpy\(d,d\_d,n\*sizeof\(int\),cudaMemcpyDeviceToHost\);
-
-for\(inti=0;i&lt;n;i++\)
-
-if\(d\[i\]!=r\[i\]\)printf\("Error: d\[%d\]!=r\[%d\] \(%d, %d\)n",i,i,d\[i\],r\[i\]\);
-
-// run dynamic shared memory version
-
-cudaMemcpy\(d\_d,a,n\*sizeof\(int\),cudaMemcpyHostToDevice\);
-
-dynamicReverse&lt;&lt;&lt;1,n,n\*sizeof\(int\)&gt;&gt;&gt;\(d\_d,n\);
-
-cudaMemcpy\(d,d\_d,n\*sizeof\(int\),cudaMemcpyDeviceToHost\);
-
-for\(inti=0;i&lt;n;i++\)
-
-if\(d\[i\]!=r\[i\]\)printf\("Error: d\[%d\]!=r\[%d\] \(%d, %d\)n",i,i,d\[i\],r\[i\]\);
-
-}
 
 This code reverses the data in a 64-element array using shared memory. The two kernels are very similar, differing only in how the shared memory arrays are declared and how the kernels are invoked.
 
@@ -104,25 +72,20 @@ This code reverses the data in a 64-element array using shared memory. The two k
 
 If the shared memory array size is known at compile time, as in the staticReverse kernel, then we can explicitly declare an array of that size, as we do with the arrays.
 
-\_\_global\_\_voidstaticReverse\(int\*d,intn\)
-
-{
-
-\_\_shared\_\_ints\[64\];
-
-intt=threadIdx.x;
-
-inttr=n-t-1;
-
-s\[t\]=d\[t\];
-
-\_\_syncthreads\(\);
-
-d\[t\]=s\[tr\];
-
+```c
+__global__ void staticReverse(int *d,int n) {
+    __shared__ int s[64];
+    int t=threadIdx.x;
+    int tr=n-t-1;
+    s[t]=d[t];
+    __syncthreads();
+    d[t]=s[tr];
 }
+```
 
-In this kernel,tandtrare the two indices representing the original and reverse order, respectively. Threads copy the data from global memory to shared memory with the statements\[t\] = d\[t\], and the reversal is done two lines later with the statementd\[t\] = s\[tr\]. But before executing this final line in which each thread accesses data in shared memory that was written by another thread, remember that we need to make sure all threads have completed the loads to shared memory, by calling\_\_syncthreads\(\).
+
+
+In this kernel,t and tr are the two indices representing the original and reverse order, respectively. Threads copy the data from global memory to shared memory with the statements\[t\] = d\[t\], and the reversal is done two lines later with the statementd\[t\] = s\[tr\]. But before executing this final line in which each thread accesses data in shared memory that was written by another thread, remember that we need to make sure all threads have completed the loads to shared memory, by calling\_\_syncthreads\(\).
 
 The reason shared memory is used in this example is to facilitate global memory coalescing on older CUDA devices \(Compute Capability 1.1 or earlier\). Optimal global memory coalescing is achieved for both reads and writes because global memory is always accessed through the linear, aligned indext. The reversed indextris only used to access shared memory, which does not have the sequential access restrictions of global memory for optimal performance. The only performance issue with shared memory is bank conflicts, which we will discuss later. \(Note that on devices of Compute Capability 1.2 or later, the memory system can fully coalesce even the reversed index stores to global memory. But this technique is still useful for other access patterns, as I’ll show in the next post.\)
 
@@ -136,17 +99,18 @@ The dynamic shared memory kernel,dynamicReverse\(\), declares the shared memory 
 
 What if you need multiple dynamically sized arrays in a single kernel? You must declare a singleexternunsized array as before, and use pointers into it to divide it into multiple arrays, as in the following excerpt.
 
-extern\_\_shared\_\_ints\[\];
+```c
+extern __shared__ int s[];
+int *integerData=s;// nI ints
+float *floatData=(float*)&integerData[nI];// nF floats
+char *charData=(char*)&floatData[nF];// nC chars
 
-int\*integerData=s;// nI ints
+//In the kernel launch, specify the total shared memory needed, as in the following.
 
-float\*floatData=\(float\*\)&integerData\[nI\];// nF floats
+myKernel<<<gridSize,blockSize,nI*sizeof(int)+nF*sizeof(float)+nC*sizeof(char)>>>(...);
+```
 
-char\*charData=\(char\*\)&floatData\[nF\];// nC chars
 
-In the kernel launch, specify the total shared memory needed, as in the following.
-
-myKernel&lt;&lt;&lt;gridSize,blockSize,nI\*sizeof\(int\)+nF\*sizeof\(float\)+nC\*sizeof\(char\)&gt;&gt;&gt;\(...\);
 
 **Shared memory bank conflicts**
 

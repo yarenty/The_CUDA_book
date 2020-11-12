@@ -4,7 +4,153 @@ What is difference between global memory and texture memory?
 
 ![](.gitbook/assets/texture_thread_access.png)
 
+&lt;!--  
+/\* Font Definitions \*/  
+@font-face
 
+```text
+{font-family:"Cambria Math";
+
+panose-1:0 0 0 0 0 0 0 0 0 0;
+
+mso-font-charset:1;
+
+mso-generic-font-family:roman;
+
+mso-font-format:other;
+
+mso-font-pitch:variable;
+
+mso-font-signature:0 0 0 0 0 0;}
+```
+
+@font-face
+
+```text
+{font-family:"Arial Unicode MS";
+
+panose-1:2 11 6 4 2 2 2 2 2 4;
+
+mso-font-charset:0;
+
+mso-generic-font-family:auto;
+
+mso-font-pitch:variable;
+
+mso-font-signature:-134238209 -371195905 63 0 4129279 0;}
+```
+
+/\* Style Definitions \*/
+
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+
+```text
+{mso-style-unhide:no;
+
+mso-style-parent:"";
+
+margin:0cm;
+
+margin-bottom:.0001pt;
+
+mso-pagination:widow-orphan;
+
+font-size:12.0pt;
+
+font-family:"Times New Roman";
+
+mso-fareast-font-family:"Arial Unicode MS";
+
+border:none;
+
+mso-ansi-language:EN-US;
+
+mso-fareast-language:EN-US;}
+```
+
+p.Body, li.Body, div.Body
+
+```text
+{mso-style-name:Body;
+
+mso-style-unhide:no;
+
+mso-style-parent:"";
+
+margin:0cm;
+
+margin-bottom:.0001pt;
+
+mso-pagination:widow-orphan;
+
+font-size:11.0pt;
+
+font-family:Helvetica;
+
+mso-fareast-font-family:"Arial Unicode MS";
+
+mso-hansi-font-family:"Arial Unicode MS";
+
+mso-bidi-font-family:"Arial Unicode MS";
+
+color:black;
+
+border:none;
+
+mso-ansi-language:EN-IE;
+
+mso-fareast-language:EN-US;}
+```
+
+.MsoChpDefault
+
+```text
+{mso-style-type:export-only;
+
+mso-default-props:yes;
+
+font-size:10.0pt;
+
+mso-ansi-font-size:10.0pt;
+
+mso-bidi-font-size:10.0pt;
+
+mso-fareast-font-family:"Arial Unicode MS";
+
+border:none;
+
+mso-ansi-language:EN-IE;
+
+mso-fareast-language:EN-US;}
+```
+
+.MsoPapDefault
+
+```text
+{mso-style-type:export-only;}
+```
+
+@page WordSection1
+
+```text
+{size:612.0pt 792.0pt;
+
+margin:72.0pt 72.0pt 72.0pt 72.0pt;
+
+mso-header-margin:36.0pt;
+
+mso-footer-margin:36.0pt;
+
+mso-paper-source:0;}
+```
+
+div.WordSection1
+
+```text
+{page:WordSection1;}
+```
+
+--&gt;
 
 There is yet another type of read-only memory that is available for use in your programs written in CUDA C. Readers familiar with the workings of graphics hardware will not be surprised, but the GPU’s sophisticated texture memory may also be used for general-purpose computing. Although NVIDIA designed the texture units for the classical OpenGL and DirectX rendering pipelines, texture memory has some properties that make it extremely useful for computing.
 
@@ -32,9 +178,9 @@ A point to remember regarding Texture memory
 
 Within a kernel call, the texture cache is not kept coherent with respect to global memory writes, so texture fetches from addresses that have been written via global stores in the same kernel call return undefined data. That is, a thread can safely read a memory location via texture if the location has been updated by a previous kernel call or memory copy, but not if it has been previously updated by the same thread or another thread within the same kernel call. This is relevant only when fetching from linear or pitch-linear memory because a kernel cannot write to CUDA arrays.
 
-{% hint style="info" %}
+Note:-
+
 If textures are fetched using tex1D\(\), tex2D\(\), or tex3D\(\) rather than tex1Dfetch\(\), the hardware provides other capabilities that might be useful for some applications such as image processing,
-{% endhint %}
 
 Nice Texture Memory Features / Advantages of Texture memory in CUDA
 
@@ -44,24 +190,27 @@ Feature of texture memory for programmer convince, here some of them,
 
 Get some things for free:
 
-* Linear interpolation of adjacent data values
+–Linear interpolation of adjacent data values
 
 ![](.gitbook/assets/texture_linear_interpolation.png)
 
-* Automatic normalization of data when you fetch it
-  * \[0,1\] for unsigned values
-  * \[-1,1\] for signed values
-* Automatic normalization of array indices to \[0,1\]
-  * e.g. same code for all problem sizes
-* Automatic boundary handling
+–Automatic normalization of data when you fetch it
 
+•\[0,1\] for unsigned values
 
+•\[-1,1\] for signed values
 
+–Automatic normalization of array indices to \[0,1\]
 
+•e.g. same code for all problem sizes
+
+–Automatic boundary handling
+
+Fig 3
 
 Disadvantages of Texture memory in CUDA
 
-Read-only
+•Read-only
 
 –Can only update 3D textures by performing a memcpy to some rectangular region of the texture
 
@@ -129,34 +278,49 @@ On CUDA side:
 
 move fingerprints from parameters to texture declaration:
 
-`texture<float, 2, cudaReadModeElemntType> db;`
+texture&lt;float, 2, cudaReadModeElemntType&gt; db;
 
 on Java side:
 
-```java
 // Create the array on the device
-CUarray arrRscp = new CUarray();
-CUDA_ARRAY_DESCRIPTOR ad = new CUDA_ARRAY_DESCRIPTOR();
-ad.Format = CU_AD_FORMAT_FLOAT;
+
+CUarray arrRscp = new CUarray\(\);
+
+CUDA\_ARRAY\_DESCRIPTOR ad = new CUDA\_ARRAY\_DESCRIPTOR\(\);
+
+ad.Format = CU\_AD\_FORMAT\_FLOAT;
+
 ad.Width = stationsDB.length;
+
 ad.Height = 1;
+
 ad.NumChannels = 1;
-cuArrayCreate(arrRscp, ad);
+
+cuArrayCreate\(arrRscp, ad\);
+
 // Copy the host input to the array
-Pointer pInput = Pointer.to(input_float_1D);
-cuMemcpyHtoA(arrRscp, 0, stationsDB, stationsDB.length * Sizeof.FLOAT);
+
+Pointer pInput = Pointer.to\(input\_float\_1D\);
+
+cuMemcpyHtoA\(arrRscp, 0, stationsDB, stationsDB.length \* Sizeof.FLOAT\);
+
 // Set up the texture reference
-CUtexref texref = new CUtexref();
-cuModuleGetTexRef(texref, module, "db");
-cuTexRefSetFilterMode(texref, CU_TR_FILTER_MODE_POINT);//LINEAR
-cuTexRefSetAddressMode(texref, 0, CU_TR_ADDRESS_MODE_WRAP); //CLAMP
-cuTexRefSetAddressMode(texref, 1, CU_TR_ADDRESS_MODE_WRAP);
-cuTexRefSetFlags(texref, CU_TRSA_OVERRIDE_FORMAT);
-cuTexRefSetFormat(texref, CU_AD_FORMAT_FLOAT, 1);
-cuTexRefSetArray(texref, arrRscp, CU_TRSA_OVERRIDE_FORMAT);
-```
 
+CUtexref texref = new CUtexref\(\);
 
+cuModuleGetTexRef\(texref, module, "db"\);
+
+cuTexRefSetFilterMode\(texref, CU\_TR\_FILTER\_MODE\_POINT\);//LINEAR
+
+cuTexRefSetAddressMode\(texref, 0, CU\_TR\_ADDRESS\_MODE\_WRAP\); //CLAMP
+
+cuTexRefSetAddressMode\(texref, 1, CU\_TR\_ADDRESS\_MODE\_WRAP\);
+
+cuTexRefSetFlags\(texref, CU\_TRSA\_OVERRIDE\_FORMAT\);
+
+cuTexRefSetFormat\(texref, CU\_AD\_FORMAT\_FLOAT, 1\);
+
+cuTexRefSetArray\(texref, arrRscp, CU\_TRSA\_OVERRIDE\_FORMAT\);
 
 However that will not work.
 
@@ -185,37 +349,59 @@ TEXTURE\_DIM = 3072;
 
 Java code will change to:
 
-```java
 // Create the array on the device
-CUarray arrRscp = new CUarray();
-CUDA_ARRAY_DESCRIPTOR ad = new CUDA_ARRAY_DESCRIPTOR();
-ad.Format = CU_AD_FORMAT_FLOAT;
-ad.Width = TEXTURE_DIM;
+
+CUarray arrRscp = new CUarray\(\);
+
+CUDA\_ARRAY\_DESCRIPTOR ad = new CUDA\_ARRAY\_DESCRIPTOR\(\);
+
+ad.Format = CU\_AD\_FORMAT\_FLOAT;
+
+ad.Width = TEXTURE\_DIM;
+
 ad.Height = parts;
+
 ad.NumChannels = 1;
-cuArrayCreate(arrRscp, ad);
+
+cuArrayCreate\(arrRscp, ad\);
+
 // Copy the host input to the array
-CUDA_MEMCPY2D copyHD = new CUDA_MEMCPY2D();
-copyHD.srcMemoryType = CUmemorytype.CU_MEMORYTYPE_HOST;
-copyHD.srcHost = Pointer.to(DB);
-copyHD.srcPitch = TEXTURE_DIM * Sizeof.FLOAT;
-copyHD.dstMemoryType = CUmemorytype.CU_MEMORYTYPE_ARRAY;
+
+CUDA\_MEMCPY2D copyHD = new CUDA\_MEMCPY2D\(\);
+
+copyHD.srcMemoryType = CUmemorytype.CU\_MEMORYTYPE\_HOST;
+
+copyHD.srcHost = Pointer.to\(DB\);
+
+copyHD.srcPitch = TEXTURE\_DIM \* Sizeof.FLOAT;
+
+copyHD.dstMemoryType = CUmemorytype.CU\_MEMORYTYPE\_ARRAY;
+
 copyHD.dstArray = arrRscp;
-copyHD.WidthInBytes = TEXTURE_DIM * Sizeof.FLOAT;
+
+copyHD.WidthInBytes = TEXTURE\_DIM \* Sizeof.FLOAT;
+
 copyHD.Height = parts;
-cuMemcpy2D(copyHD);
+
+cuMemcpy2D\(copyHD\);
+
 // Set up the texture reference
-CUtexref texref = new CUtexref();
-cuModuleGetTexRef(texref, module, "db");
-cuTexRefSetFilterMode(texref, CU_TR_FILTER_MODE_POINT);//LINEAR
-cuTexRefSetAddressMode(texref, 0, CU_TR_ADDRESS_MODE_WRAP); //CLAMP
-cuTexRefSetAddressMode(texref, 1, CU_TR_ADDRESS_MODE_WRAP);
-cuTexRefSetFlags(texref, CU_TRSA_OVERRIDE_FORMAT);
-cuTexRefSetFormat(texref, CU_AD_FORMAT_FLOAT, 1);
-cuTexRefSetArray(texref, arrRscp, CU_TRSA_OVERRIDE_FORMAT);
-```
 
+CUtexref texref = new CUtexref\(\);
 
+cuModuleGetTexRef\(texref, module, "db"\);
+
+cuTexRefSetFilterMode\(texref, CU\_TR\_FILTER\_MODE\_POINT\);//LINEAR
+
+cuTexRefSetAddressMode\(texref, 0, CU\_TR\_ADDRESS\_MODE\_WRAP\); //CLAMP
+
+cuTexRefSetAddressMode\(texref, 1, CU\_TR\_ADDRESS\_MODE\_WRAP\);
+
+cuTexRefSetFlags\(texref, CU\_TRSA\_OVERRIDE\_FORMAT\);
+
+cuTexRefSetFormat\(texref, CU\_AD\_FORMAT\_FLOAT, 1\);
+
+cuTexRefSetArray\(texref, arrRscp, CU\_TRSA\_OVERRIDE\_FORMAT\);
 
 NOTE: cuTexRefSetFlags:CU\_TRSA\_OVERRIDE\_FORMATvsCU\_TRSF\_NORMALIZED\_COORDINATES
 
@@ -227,7 +413,7 @@ Where we are: we get advantage of texture caching as in same time all processors
 
 So it’s even.
 
-
+-&gt;&gt;
 
 Let’s look into group by station solution:
 
