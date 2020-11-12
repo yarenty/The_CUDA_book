@@ -84,9 +84,9 @@ _GPUs have evolved to the point where many real-world applications are easily im
 \_\_
 
 {% hint style="danger" %}
-_There was several projects in the past porting CUDA to different platforms._
+_There were several projects in the past porting CUDA to different platforms._
 
-* SWAN - CUDA to OpenlCL translation
+* SWAN - CUDA to OpenCL translation
 * Ocelot - PTX to x86 emulation and translation
 
 They are no longer supported.
@@ -102,7 +102,7 @@ Data parallel algorithms leverage GPU attributes:
 
 * large date arrays, streaming throughput
 * fine-grain SIMD parallelism
-* low-latency floating point \(FP\)computation
+* low-latency floating-point \(FP\)computation
 
 Applications:
 
