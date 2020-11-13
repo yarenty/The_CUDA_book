@@ -4,9 +4,21 @@
 
 Hardware allocates blocks to available SMs at it's discretion.
 
+![](.gitbook/assets/scheduling1.jpeg)
+
+
+
 It allows up to 8 blocks per SM and block the remaining ones
 
+![](.gitbook/assets/scheduling2.jpeg)
+
+
+
 Until they are processed
+
+![](.gitbook/assets/scheduling3.jpeg)
+
+
 
 
 
@@ -23,6 +35,10 @@ Warps are switched in/out of execution depending on the availability of instruct
 Warp switching has minimal overhead
 
 This is how GPU performs latency hiding
+
+​
+
+
 
 
 
