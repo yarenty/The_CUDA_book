@@ -36,7 +36,7 @@ Warp switching has minimal overhead
 
 This is how GPU performs latency hiding
 
-​
+![Scheduling - SM level](.gitbook/assets/scheduling_sm.jpeg)
 
 
 
