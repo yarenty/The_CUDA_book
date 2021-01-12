@@ -22,6 +22,7 @@
 * [x] parallel computing
 * [x] CUDA threads
 * [x] refactor structure of the book, ie: memory
+* [ ] refactor intro
 * [ ] start github code repo
 * [ ] code examples
 * [ ] hardware overview - update with latest 2020 
