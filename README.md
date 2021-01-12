@@ -4,6 +4,7 @@
 
 #### Changelog:
 
+* 01/2021 - cleaning structure and finishing core images doodling
 * 11/2020 - most of the texts about CUDA and possible most doodles
 * 10/2020 - memory model
 * 09/2020 - programming model
@@ -20,7 +21,7 @@
 * [x] programming model
 * [x] parallel computing
 * [x] CUDA threads
-* [ ] refactor structure of the book, ie: memory
+* [x] refactor structure of the book, ie: memory
 * [ ] start github code repo
 * [ ] code examples
 * [ ] hardware overview - update with latest 2020 

@@ -40,7 +40,7 @@ Usage of CUDA takes 4 steps as was visible in first picture:
 
 4\)Copy back output data
 
-![](.gitbook/assets/CUDA_process_flow2.png)
+![](../.gitbook/assets/CUDA_process_flow2.png)
 
 Lets start our implementations with brute force solution.
 
@@ -68,7 +68,7 @@ There are few points that need to be told:
 >
 > **Instead going through loop - here you are allowing each processor to get it’s own element and work on them in parallel!**
 
-![](.gitbook/assets/GPU_blocks_and_threads.png)
+![](../.gitbook/assets/GPU_blocks_and_threads.png)
 
 GPUs has lots of processors that are working in same time on same data and this is the method to get current processor ID inside block \(WARP\)
 

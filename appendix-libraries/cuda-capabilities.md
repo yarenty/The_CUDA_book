@@ -2,7 +2,7 @@
 
 On picture below you could see all areas of GPU that we potentially could use.
 
-![](.gitbook/assets/GPU_grid_simple.png)
+![](../.gitbook/assets/GPU_grid_simple.png)
 
 From CPU perspective we could have access to:
 
