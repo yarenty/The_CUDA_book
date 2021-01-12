@@ -72,6 +72,8 @@ double b = mydata[idx].value;
 
 ```
 
+![Uncoalesced access - array of strustures](.gitbook/assets/gm3_uncoal_access.jpg)
+
 {% hint style="info" %}
 Kills performance
 {% endhint %}
