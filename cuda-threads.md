@@ -1,4 +1,4 @@
-# CUDA Threads
+# Threads
 
 ### What is a CUDA Thread
 
@@ -44,7 +44,7 @@ Blocks can have 1, 2, or 3 dimensions
 
 Each block dimension can have a maximum number of threads \(e.g. 512, 1024\)
 
-![Thread block organisation \(1D/2D\)](../.gitbook/assets/thread_block_organisation.jpeg)
+![Thread block organisation \(1D/2D\)](.gitbook/assets/thread_block_organisation.jpeg)
 
 
 
@@ -52,13 +52,13 @@ Each block dimension can have a maximum number of threads \(e.g. 512, 1024\)
 
 Block shape doesn't matter, but may be usefull for mapping threads to data
 
-![Thread block vs array access](../.gitbook/assets/thread_block_array.jpeg)
+![Thread block vs array access](.gitbook/assets/thread_block_array.jpeg)
 
 
 
 Or mapping nested loops in the original code: each 2D-organised thread taking care of an \(i,j\) pair:
 
-![Thread blocks - mapping loops](../.gitbook/assets/thread_block_loop.jpeg)
+![Thread blocks - mapping loops](.gitbook/assets/thread_block_loop.jpeg)
 
 
 
@@ -70,7 +70,7 @@ Blocks are organised in a grid
 
 A grid can be 1D, 2D \(or 3D\)
 
-![Grid vs blocks](../.gitbook/assets/block_organisation.jpeg)
+![Grid vs blocks](.gitbook/assets/block_organisation.jpeg)
 
 
 
@@ -103,13 +103,13 @@ Example: 1D blocks and grids
 Simple Program Multiplt Data - concept!
 {% endhint %}
 
-![1D blocks and grid](../.gitbook/assets/block_1d.jpeg)
+![1D blocks and grid](.gitbook/assets/block_1d.jpeg)
 
 
 
 Example: 2D blocks and grids
 
-![2D blocks and grid](../.gitbook/assets/block_2d.jpeg)
+![2D blocks and grid](.gitbook/assets/block_2d.jpeg)
 
 
 
@@ -117,7 +117,7 @@ Example: 2D blocks and grids
 
 Global thread ID can be used to decide what data thread will work on
 
-![Computing global thread ID](../.gitbook/assets/global_thread_id.jpeg)
+![Computing global thread ID](.gitbook/assets/global_thread_id.jpeg)
 
 
 
@@ -141,7 +141,7 @@ Threads within a block can synchronise
 
 A thread cannot synchronise with threads in other blocks
 
-![threads cooperation](../.gitbook/assets/thread_cooperation.jpeg)
+![threads cooperation](.gitbook/assets/thread_cooperation.jpeg)
 
 
 
@@ -152,7 +152,7 @@ Within a block you can:
 * exchange data vie shared memory \(or other\)
 * synchronise threads: \_\_syncthreads\(\)
 
-![threads synchronisation](../.gitbook/assets/thread_eynchronisation.jpeg)
+![threads synchronisation](.gitbook/assets/thread_eynchronisation.jpeg)
 
 
 

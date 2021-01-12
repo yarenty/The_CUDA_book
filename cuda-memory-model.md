@@ -1,4 +1,4 @@
-# CUDA Memory Model
+# Memory Model
 
 
 
@@ -21,7 +21,7 @@ CUDA memory spaces & scopes
 * constant
 * registers
 
-![CUDA memory spaces](../.gitbook/assets/mem_spaces.jpeg)
+![CUDA memory spaces](.gitbook/assets/mem_spaces.jpeg)
 
 
 
@@ -66,7 +66,7 @@ Global memory has long latency, there are others:
 * constant
 * registers
 
-![Memory types](../.gitbook/assets/mem_types.jpeg)
+![Memory types](.gitbook/assets/mem_types.jpeg)
 
 
 
@@ -81,7 +81,7 @@ Number of 32-bit registers per SM:
 * compute capability 1.3: 16K
 * compute capability 2.x: 32K
 
-![Registers](../.gitbook/assets/mem_registers.jpeg)
+![Registers](.gitbook/assets/mem_registers.jpeg)
 
 {% hint style="info" %}
 Compiler switch -ptxas="--verbose" shows info about used registers.
@@ -133,7 +133,7 @@ Size per SM:
 * compute capability 1.3: 16K
 * compute capability 2.x: 16 or 48K
 
-![Shared memory](../.gitbook/assets/mem_shared.jpeg)
+![Shared memory](.gitbook/assets/mem_shared.jpeg)
 
 Possible uses:
 
@@ -275,7 +275,7 @@ __global__ void offsetCopy(float* idata, float* odata, int offset){
 
 #### Where to declare variables?
 
-![](../.gitbook/assets/tips_variables.png)
+![](.gitbook/assets/tips_variables.png)
 
 #### Variable type restrictions \(OLD\)
 
@@ -378,7 +378,7 @@ The host can:
 
 
 
-![CUDA device memory space](../.gitbook/assets/device_memory.jpeg)
+![CUDA device memory space](.gitbook/assets/device_memory.jpeg)
 
 
 

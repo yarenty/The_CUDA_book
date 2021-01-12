@@ -26,7 +26,7 @@ A simple matrix multiplication example that illustrates the basic features of me
 
 
 
-![](../.gitbook/assets/matrix1.jpeg)
+![](.gitbook/assets/matrix1.jpeg)
 
 P = M \* N of size WIDTH \* WIDTH
 
@@ -39,7 +39,7 @@ Without tiling:
 
 #### Memory layout on matrix in C
 
-![memory layout in C](../.gitbook/assets/matrix2.jpeg)
+![memory layout in C](.gitbook/assets/matrix2.jpeg)
 
 
 
@@ -64,7 +64,7 @@ void MatrixMultHost(float* M, float* N, float* P, int WIDTH) {
 }
 ```
 
-![matrix multiplication - host](../.gitbook/assets/matrix3.jpeg)
+![matrix multiplication - host](.gitbook/assets/matrix3.jpeg)
 
 #### Step 2: Input data transfer
 
@@ -145,7 +145,7 @@ elementM, elementN  are local registers
 line 12 =&gt; Single Program Multiple Data
 {% endhint %}
 
-![matrix multiplication - device](../.gitbook/assets/matrix4.jpeg)
+![matrix multiplication - device](.gitbook/assets/matrix4.jpeg)
 
 
 
@@ -175,7 +175,7 @@ What is going on?
 
 
 
-![matrix multiplication - one block of threads ](../.gitbook/assets/matrix5.jpeg)
+![matrix multiplication - one block of threads ](.gitbook/assets/matrix5.jpeg)
 
 One block of threads to compute matrix Pd = each thread computes one element of Pd.
 
