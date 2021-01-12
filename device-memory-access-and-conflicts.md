@@ -109,7 +109,7 @@ double b = mydata.value[idx];
 
 ```
 
-
+![Coalesced access - structure of arrays](.gitbook/assets/gm4_coal_access.jpg)
 
 
 
