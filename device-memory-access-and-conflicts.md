@@ -24,7 +24,7 @@ couble result = array[...];
 ![Global memory - coalesced access](.gitbook/assets/gm1_coal.jpg)
 
 {% hint style="info" %}
-Illustration only - actual behaviour depends on compute capability, memory alignment ...
+Illustration only - actual behavior depends on compute capability, memory alignment ...
 {% endhint %}
 
 
@@ -37,6 +37,12 @@ Illustration only - actual behaviour depends on compute capability, memory align
 //kernel code:
 couble result = array[...];
 ```
+
+![Global memory  - uncoalesced access](.gitbook/assets/gm2_uncoal.jpg)
+
+{% hint style="info" %}
+Illustration only - actual behavior depends on compute capability, memory alignment ...
+{% endhint %}
 
 
 
