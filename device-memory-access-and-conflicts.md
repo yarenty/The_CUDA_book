@@ -158,11 +158,13 @@ From programmers guide:
 
 #### Short vector types
 
-Array of multi-element data structures?
+An array of multi-element data structures?
 
 * sequential access pattern uses multiple times the necessary bandwidth
 * short vector types don't waste bandwidth, and use one instruction to load multiple elements: int2, char4, etc
 * it is possible to create your own short-vector types
+
+![Short vector types](.gitbook/assets/short_vector_types.jpg)
 
 
 
