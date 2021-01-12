@@ -193,11 +193,11 @@ Minimise data transfers between global memory and the device by maximising use o
 
 Maximise optimal memory access patterns
 
-\[img\]
 
 
 
 
+![Optimizing memory throughput](.gitbook/assets/optimising_memory_throughput.jpg)
 
 
 
