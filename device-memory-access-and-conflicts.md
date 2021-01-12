@@ -21,7 +21,7 @@ If not coalesced - may have to perform several long latency transactions =&gt; w
 couble result = array[...];
 ```
 
-
+![Global memory - coalesced access](.gitbook/assets/gm1_coal.jpg)
 
 {% hint style="info" %}
 Illustration only - actual behaviour depends on compute capability, memory alignment ...
