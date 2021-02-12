@@ -145,7 +145,9 @@ TODO: Update with new capabilities
 
 TODO: Update with new capabilities
 
-
+{% hint style="info" %}
+16x slower
+{% endhint %}
 
 ### Coalescing - misaligned and sequential
 
@@ -164,7 +166,9 @@ TODO: Update with new capabilities
 
 TODO: Update with new capabilities
 
-
+{% hint style="info" %}
+Twice expensive
+{% endhint %}
 
 
 
@@ -181,7 +185,7 @@ Successive 32-bit words assigned to successive banks
 
 `__shared__ float shared[64];`
 
-
+\[img\]
 
 Memory access conflicts don't occur if:
 
