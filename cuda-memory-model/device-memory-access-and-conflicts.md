@@ -113,6 +113,63 @@ double b = mydata.value[idx];
 
 
 
+### Coalescing - aligned and sequential
+
+\[img\]
+
+| Compute capability | 1.0 /1.1 | 1.2/1.3 | 2.0 |
+| :--- | :--- | :--- | :--- |
+| Memory transactions | uncached | uncached | cached |
+|  | 1\* 64B at 128 | 1\* 64B at 128 | 1\* 128B at 128 |
+|  | 1\* 64B at 192 | 1\* 64B at 192 |  |
+
+> GPU reference quide
+
+TODO: Update with new capabilities
+
+
+
+### Coalescing - aligned and non - sequential
+
+\[img\]
+
+| Compute capability | 1.0 /1.1 | 1.2/1.3 | 2.0 |
+| :--- | :--- | :--- | :--- |
+| Memory transactions | uncached | uncached | cached |
+|  | 8\* 32B at 128 | 1\* 64B at 128 | 1\* 128B at 128 |
+|  | 8\* 32B at 160 | 1\* 64B at 192 |  |
+|  | 8\* 32B at 192 |  |  |
+|  | 8\* 32B at 224 |  |  |
+
+> GPU reference quide
+
+TODO: Update with new capabilities
+
+
+
+### Coalescing - misaligned and sequential
+
+\[img\]
+
+| Compute capability | 1.0 /1.1 | 1.2/1.3 | 2.0 |
+| :--- | :--- | :--- | :--- |
+| Memory transactions | uncached | uncached | cached |
+|  | 7\* 32B at 128 | 1\* 128B at 128 | 1\* 128B at 128 |
+|  | 8\* 32B at 160 | 1\* 64B at 192 | 1\* 128B at 256 |
+|  | 8\* 32B at 192 | 1\* 32B at 256 |  |
+|  | 8\* 32B at 224 |  |  |
+|  | 1\* 32B at 256 |  |  |
+
+> GPU reference quide
+
+TODO: Update with new capabilities
+
+
+
+
+
+
+
 ### Shared memory - banks & conflicts
 
 Shared memory is organised into banks:
